@@ -70,7 +70,7 @@ const Portfolio = () => {
     },
       {
       title: "Project Team Digital Agency",
-      description: "Web Creative Digital Agency berbasi web dengan Module manajemen project, Account, dan HR Management",
+      description: "Web Creative Digital Agency berbasi web dengan Module manajemen project, Accounting, dan HR Management",
       tech: ["Laravel", "Figma","MongoDb", "Symfony", "Tailwind CSS", "Vue","MySQL","Php Native"],
       image: "/images/Fastrack.png",
       github: "#",
