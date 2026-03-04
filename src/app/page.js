@@ -1,715 +1,836 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import Image from "next/image";
-import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Menu, X, Code, Palette, Smartphone, Star, Zap } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Github, Linkedin, Mail, ExternalLink, Phone, MapPin, Code, Layers, Server, ChevronDown, ArrowUpRight } from "lucide-react";
 
-const Portfolio = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [scrollY, setScrollY] = useState(0);
+// ── DATA ───────────────────────────────────────────────────────────────────
 
-  useEffect(() => {
-    setIsLoaded(true);
-    
-    // Mouse tracking untuk parallax effect
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+const projects = [
+  {
+    title: "Invoice Management System & HR Management",
+    description:
+      "Full-stack Invoice Management System dan HR Management dengan Laravel, MySQL, dan Tailwind CSS yang terintegrasi dengan database lama perusahaan.",
+    tech: ["Laravel", "Vue.js", "Tailwind CSS", "MySQL"],
+    image: "/images/project.png",
+    github: "https://github.com/fatedavi/MPA-project",
+    live: "https://epower.multipowerabadi.co.id/",
+  },
+  {
+    title: "Dashboard Sekolah Berbasis Web",
+    description:
+      "Dashboard berbasis web dengan fitur manajemen siswa, kelas, absen, dan nilai untuk keperluan administrasi sekolah.",
+    tech: ["Laravel", "Vue.js", "MySQL"],
+    image: "/images/project2.png",
+    github: "https://github.com/fatedavi/akademik-app",
+    live: null,
+  },
+  {
+    title: "Aplikasi Web POS",
+    description:
+      "Aplikasi kasir (Point of Sale) sederhana berbasis web menggunakan CodeIgniter 3 untuk kebutuhan toko ritel.",
+    tech: ["CodeIgniter 3", "PHP", "MySQL"],
+    image: "/images/Ci3.png",
+    github: null,
+    live: null,
+  },
+  {
+    title: "Project Team Digital Agency",
+    description:
+      "Platform web Creative Digital Agency dengan modul manajemen project, Accounting, dan HR Management untuk tim agensi kreatif.",
+    tech: ["Laravel", "Vue.js", "MongoDB", "Symfony", "PHP Native"],
+    image: "/images/Fastrack.png",
+    github: null,
+    live: null,
+  },
+];
 
-    // Scroll tracking untuk scroll-based animations
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+const skills = [
+  {
+    name: "Frontend Development",
+    icon: Code,
+    technologies: ["Next.js", "Vue.js", "Tailwind CSS", "HTML/CSS"],
+    level: 80,
+  },
+  {
+    name: "Backend Development",
+    icon: Server,
+    technologies: ["Laravel", "PHP Native", "Node.js", "MySQL", "MongoDB"],
+    level: 80,
+  },
+  {
+    name: "UI/UX & Tools",
+    icon: Layers,
+    technologies: ["Figma", "Git", "REST API"],
+    level: 70,
+  },
+];
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+const experiences = [
+  {
+    year: "Agustus 2025",
+    duration: "1 Bulan",
+    company: "PT Multi Power Abadi",
+    role: "Web Developer Intern",
+    description:
+      "Membangun aplikasi Invoice Management dan HR Management berbasis web menggunakan Laravel, mempresentasikan aplikasi kepada stakeholder, serta mengenalkan konsep IT dasar kepada staf non-teknis.",
+  },
+  {
+    year: "Agustus 2023",
+    duration: "4 Bulan",
+    company: "Azlogistic",
+    role: "Software Quality Control (QC)",
+    description:
+      "Mengidentifikasi dan mendokumentasikan bug pada aplikasi dan website yang sedang dikembangkan, melakukan public speaking untuk komunikasi peningkatan proyek, serta mereview komponen kritis proyek.",
+  },
+  {
+    year: "Juni 2021",
+    duration: "4 Bulan",
+    company: "Badan Pusat Statistik (Regsokdes)",
+    role: "Data Entry Staff",
+    description:
+      "Mengelola dan memproses data yang dikumpulkan dari masyarakat dan dikirimkan oleh tim lapangan untuk keperluan survei statistik nasional.",
+  },
+  {
+    year: "Agustus 2020",
+    duration: "4 Bulan",
+    company: "Astracom",
+    role: "Warehouse Administrator",
+    description:
+      "Bertanggung jawab mencatat laptop masuk, mengelola inventaris, serta melakukan reinstalasi Windows pada perangkat yang memerlukan perbaikan.",
+  },
+];
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: 'smooth' });
-    setActiveSection(sectionId);
-    setIsMenuOpen(false);
-  };
-  
+const education = [
+  {
+    year: "2019 – 2022",
+    institution: "SMK Darma Siswa 1",
+    major: "Teknik Komputer dan Jaringan",
+    description:
+      "Mempelajari fondasi teknik komputer termasuk komponen hardware dan keterampilan perakitan PC/laptop. Pernah mengikuti kompetisi Cloud Computing antar kabupaten.",
+  },
+];
 
-  const projects = [
-    {
-      title: "Invoice Management System & Human Resource Management",
-      description: "Full-stack Invoice Management System dan HR Management dengan Laravel, Mysql, dan Tailwind CSS yang terintergrasi dengan Database lama",
-      tech: ["Laravel", "Tailwind CSS", "Vue", "MySQL", ],
-      image: "/images/project.png",
-      github: "https://github.com/fatedavi/MPA-project",
-      live: "https://epower.multipowerabadi.co.id/",
-      featured: true
-    },
-    {
-      title: "Dashboard sekolah berbasis web",
-      description: "Dashboard sekolah berbasis web dengan fitur manajemen siswa, kelas,absen dan nilai",
-      tech: ["laravel", "vue", "Mysql",],
-      image: "/images/project2.png",
-      github: "https://github.com/fatedavi/akademik-app",
-      live: "#",
-      featured: true
-    },
-    {
-      title: "Aplikasi Web POS",
-      description: "Web Pos menggunakan CI3 aplikasi kasir sederhana untuk toko",
-      tech: ["CodeIgneter 3", ],
-      image: "/images/Ci3.png",
-      github: "#",
-      live: "#",
-      featured: true
-    },
-      {
-      title: "Project Team Digital Agency",
-      description: "Web Creative Digital Agency berbasi web dengan Module manajemen project, Accounting, dan HR Management",
-      tech: ["Laravel", "Figma","MongoDb", "Symfony", "Tailwind CSS", "Vue","MySQL","Php Native"],
-      image: "/images/Fastrack.png",
-      github: "#",
-      live: "#",
-      featured: true
-    },
-  ];
+// ── COMPONENTS ─────────────────────────────────────────────────────────────
 
-  const skills = [
-    { 
-      name: "Frontend Development", 
-      icon: Code, 
-      color: "from-blue-500 via-cyan-500 to-teal-500",
-      technologies: ["Next.js", "Vue.js", "Tailwind CSS"],
-      level: 80
-    },
-    { 
-      name: "UI/UX Design", 
-      icon: Palette, 
-      color: "from-purple-500 via-pink-500 to-rose-500",
-      technologies: ["Figma"],
-      level: 70
-    },
-    { 
-      name: "Backend Development", 
-      icon: Smartphone, 
-      color: "from-green-500 via-emerald-500 to-cyan-500",
-      technologies: ["Node.js", "PHP Native", "MySQL", "Laravel", "MongoDB"],
-      level: 80
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Product Manager at TechCorp",
-      content: "John delivered exceptional work on our e-commerce platform. His attention to detail and technical expertise exceeded our expectations.",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Michael Chen",
-      role: "CTO at StartupXYZ",
-      content: "Working with John was a game-changer for our product. He brought innovative solutions and delivered on time, every time.",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
-    }
-  ];
-
+function SectionHeader({ label, title }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden relative">
-      
-      {/* Animated Cursor Follower */}
-      <div 
-        className="fixed w-6 h-6 bg-purple-400 rounded-full pointer-events-none z-50 mix-blend-difference transition-all duration-100 ease-out"
-        style={{
-          left: mousePosition.x - 12,
-          top: mousePosition.y - 12,
-          transform: `scale(${isMenuOpen ? 2 : 1})`
-        }}
-      />
+    <div className="mb-16">
+      <span
+        className="text-xs font-semibold tracking-widest uppercase"
+        style={{ color: "var(--accent)" }}
+      >
+        {label}
+      </span>
+      <h2
+        className="font-serif text-4xl md:text-5xl mt-3"
+        style={{ color: "var(--text-primary)" }}
+      >
+        {title}
+      </h2>
+      <div className="section-divider" />
+    </div>
+  );
+}
 
-      {/* Floating Particles Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-purple-400/20 rounded-full animate-ping"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 2}s`
-            }}
-          />
-        ))}
+function ProjectCard({ project, index }) {
+  return (
+    <div
+      className="card animate-fade-up"
+      style={{ animationDelay: `${index * 0.1}s`, animationFillMode: "both" }}
+    >
+      {/* Image */}
+      <div
+        className="overflow-hidden rounded-t-2xl"
+        style={{ height: "220px", background: "var(--bg-secondary)" }}
+      >
+        <img
+          src={project.image}
+          alt={project.title}
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          onError={(e) => {
+            e.target.style.display = "none";
+            e.target.parentElement.style.background =
+              "linear-gradient(135deg, #161820, #1e2030)";
+          }}
+        />
       </div>
 
-      {/* Navigation */}
+      {/* Content */}
+      <div className="p-7">
+        <h3
+          className="text-lg font-semibold mb-3 leading-snug"
+          style={{ color: "var(--text-primary)" }}
+        >
+          {project.title}
+        </h3>
+        <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--text-secondary)" }}>
+          {project.description}
+        </p>
 
+        {/* Tech tags */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.tech.map((t) => (
+            <span key={t} className="tag">
+              {t}
+            </span>
+          ))}
+        </div>
 
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <div 
-            className={`transform transition-all duration-1500 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+        {/* Links */}
+        <div className="flex items-center gap-4">
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm transition-colors duration-200"
+              style={{ color: "var(--text-secondary)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+            >
+              <Github size={15} />
+              Source
+            </a>
+          )}
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm transition-colors duration-200"
+              style={{ color: "var(--text-secondary)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+            >
+              <ExternalLink size={15} />
+              Live
+            </a>
+          )}
+          {!project.github && !project.live && (
+            <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+              Private Project
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── MAIN ───────────────────────────────────────────────────────────────────
+
+export default function Portfolio() {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <div style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
+
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      <section
+        id="home"
+        className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6"
+      >
+        {/* Subtle grid background */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 50% 0%, rgba(200,169,110,0.06) 0%, transparent 60%)",
+          }}
+        />
+
+        {/* Dot grid */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-20"
+          style={{
+            backgroundImage:
+              "radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+
+        <div
+          className={`text-center max-w-3xl mx-auto relative z-10 transition-all duration-700 ${
+            loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <span
+            className="inline-block text-xs font-semibold tracking-widest uppercase px-4 py-2 rounded-full mb-8 animate-fade-in"
             style={{
-              transform: `translateY(${scrollY * 0.1}px)`
+              background: "rgba(200,169,110,0.1)",
+              color: "var(--accent)",
+              border: "1px solid rgba(200,169,110,0.2)",
             }}
           >
-            {/* Glitch effect untuk nama */}
-            <div className="relative mb-6">
-              <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent relative z-10 hover:scale-105 transition-transform duration-300">
-                Achmad Dafi
-              </h1>
+            Junior Developer · Surabaya, Indonesia
+          </span>
 
+          <h1
+            className="font-serif mb-6 leading-tight animate-fade-up delay-100"
+            style={{
+              fontSize: "clamp(2.8rem, 7vw, 5.5rem)",
+              color: "var(--text-primary)",
+            }}
+          >
+            Achmad Dafi
+            <br />
+            <span style={{ color: "var(--accent)" }}>Ihsannudin</span>
+          </h1>
 
-            </div>
+          <p
+            className="text-lg leading-relaxed max-w-xl mx-auto mb-10 animate-fade-up delay-200"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Seorang individual dengan minat kuat di bidang teknologi informasi,
+            khususnya pengembangan perangkat lunak. Berfokus pada membangun
+            solusi web yang bersih, fungsional, dan berdampak.
+          </p>
 
-            <div className="relative">
-              <p className="text-xl md:text-3xl mb-8 text-gray-300 font-light tracking-wide">
-                <span className="inline-block animate-bounce" style={{ animationDelay: '0s' }}>J</span>
-                <span className="inline-block animate-bounce" style={{ animationDelay: '0.1s' }}>u</span>
-                <span className="inline-block animate-bounce" style={{ animationDelay: '0.2s' }}>n</span>
-                <span className="inline-block animate-bounce" style={{ animationDelay: '0.3s' }}>i</span>
-                <span className="inline-block animate-bounce" style={{ animationDelay: '0.5s' }}>o</span>
-                <span className="inline-block animate-bounce" style={{ animationDelay: '0.6s' }}>r</span>
-                <span className="mx-4">🚀</span>
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Developer</span>
-              </p>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-4 animate-fade-up delay-300">
+            <button onClick={() => scrollTo("projects")} className="btn-primary">
+              Lihat Projects
+              <ArrowUpRight size={16} />
+            </button>
+            <button onClick={() => scrollTo("contact")} className="btn-outline">
+              Hubungi Saya
+            </button>
+          </div>
 
-            <div className="flex justify-center space-x-6 mb-12">
-              {[
-                { Icon: Github, href: "https://github.com/fatedavi/", delay: "0s" },
-                { Icon: Linkedin, href: "#", delay: "0.2s" },
-                { Icon: Mail, href: "#", delay: "0.4s" }
-              ].map(({ Icon, href, delay }, index) => (
-                <a 
-                  key={index}
-                  href={href} 
-                  className="group relative p-4 bg-white/10 rounded-full backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-500 hover:scale-125 hover:rotate-12"
-                  style={{ animationDelay: delay }}
-                >
-                  <Icon size={24} className="group-hover:scale-110 transition-transform duration-300" />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                </a>
-              ))}
-            </div>
-
-            <div className="space-y-6">
-              <button
-                onClick={() => scrollToSection('projects')}
-                className="group relative inline-flex items-center space-x-3 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 px-8 py-4 rounded-full text-white font-semibold overflow-hidden hover:scale-110 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/50"
+          {/* Social links */}
+          <div className="flex justify-center gap-6 mt-12 animate-fade-up delay-400">
+            {[
+              { icon: Github, href: "https://github.com/fatedavi/", label: "GitHub" },
+              {
+                icon: Mail,
+                href: "mailto:achmaddviii@gmail.com",
+                label: "Email",
+              },
+              { icon: Phone, href: "tel:+6285649150049", label: "Phone" },
+            ].map(({ icon: Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                className="transition-colors duration-200"
+                style={{ color: "var(--text-muted)" }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "var(--accent)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "var(--text-muted)")
+                }
+                aria-label={label}
               >
-                <span className="relative z-10">Lihat Portfolio</span>
-                <Zap size={20} className="relative z-10 group-hover:rotate-12 transition-transform" />
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-700 via-pink-700 to-red-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-              </button>
-
-              <div className="animate-bounce mt-8">
-                <button onClick={() => scrollToSection('about')} className="group">
-                  <ChevronDown size={40} className="text-purple-400 group-hover:text-pink-400 transition-colors duration-300 group-hover:scale-125" />
-                </button>
-              </div>
-            </div>
+                <Icon size={20} />
+              </a>
+            ))}
           </div>
         </div>
-        
-        {/* Enhanced Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div 
-            className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"
-            style={{
-              transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
-            }}
-          ></div>
-          <div 
-            className="absolute bottom-1/4 right-1/4 w-128 h-128 bg-pink-500/20 rounded-full blur-3xl animate-pulse"
-            style={{
-              animationDelay: '1s',
-              transform: `translate(${mousePosition.x * -0.03}px, ${mousePosition.y * -0.03}px)`
-            }}
-          ></div>
-          <div 
-            className="absolute top-1/2 left-1/2 w-64 h-64 bg-cyan-500/10 rounded-full blur-2xl animate-ping"
-            style={{
-              animationDelay: '2s',
-              transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`
-            }}
-          ></div>
-        </div>
+
+        {/* Scroll indicator */}
+        <button
+          onClick={() => scrollTo("about")}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-200"
+          style={{ color: "var(--text-muted)" }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.color = "var(--accent)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.color = "var(--text-muted)")
+          }
+          aria-label="Scroll to about"
+        >
+          <ChevronDown size={24} />
+        </button>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 relative">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div 
-              className="text-center mb-16"
-              style={{
-                transform: `translateY(${Math.max(0, (scrollY - 800) * -0.1)}px)`
-              }}
-            >
-              <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
-                About Me
-              </h2>Saya
-              <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-pink-600 mx-auto rounded-full"></div>
-            </div>
-            
-            <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-              <div className="space-y-6">
-                <div className="group">
-                  <p className="text-xl text-gray-300 mb-6 leading-relaxed group-hover:text-white transition-colors duration-300">
-                    Saya adalah seorang <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-semibold">Junior Developer</span> dengan passion untuk menciptakan 
-                    solusi digital yang inovatif dan user-friendly. Dengan pengalaman lebih dari 
-                    <span className="text-cyan-400 font-bold"> 3 tahun</span>, saya fokus pada pengembangan skill web modern menggunakan 
-                    teknologi terdepan.
-                  </p>
-                </div>
-                
-                <div className="group">
-                  <p className="text-xl text-gray-300 leading-relaxed group-hover:text-white transition-colors duration-300">
-                    Saya percaya bahwa kombinasi antara <span className="text-purple-400 font-semibold">desain yang menarik</span> dan <span className="text-pink-400 font-semibold">fungsionalitas 
-                    yang solid</span> adalah kunci untuk menciptakan produk digital yang sukses dan memberikan 
-                    impact positif bagi penggunanya.
-                  </p>
-                </div>
+      {/* ── ABOUT ────────────────────────────────────────────────────────── */}
+      <section id="about" className="py-28 px-6">
+        <div className="max-w-6xl mx-auto">
+          <SectionHeader label="Tentang Saya" title="About Me" />
 
-                <div className="pt-6">
-                  <h3 className="text-2xl font-semibold mb-4 text-purple-400">Pencapaian</h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    {[
-                      { number: "10+", label: "Projects" },
-                      { number: "3+", label: "Years Exp" },
-                    ].map((stat, index) => (
-                      <div key={index} className="text-center group hover:scale-110 transition-transform duration-300">
-                        <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                          {stat.number}
-                        </div>
-                        <div className="text-gray-400 text-sm">{stat.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Bio */}
+            <div className="animate-fade-up">
+              <div
+                className="overflow-hidden mb-8"
+                style={{
+                  width: "220px",
+                  aspectRatio: "3/4",
+                  borderRadius: "16px",
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border)",
+                  boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+                }}
+              >
+                <img
+                  src="/images/profile.jpg"
+                  alt="Achmad Dafi Ihsannudin"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.parentElement.innerHTML =
+                      '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;font-family:serif;color:var(--accent)">AD</div>';
+                  }}
+                />
               </div>
 
-              <div className="relative group">
-                <div className="relative">
-                  <div className="w-80 h-80 mx-auto bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 rounded-full p-2 group-hover:scale-110 transition-all duration-500 group-hover:rotate-3">
-                    <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 rounded-full flex items-center justify-center relative overflow-hidden">
-                      <div className="text-8xl group-hover:scale-110 transition-transform duration-300">i
-                        <img src="/images/profile.jpg" alt="Description" className="w-full h-full object-cover" />
-                      </div>
-                      
-                      {/* Floating Icons */}
-                      <div className="absolute top-4 right-4 p-2 bg-white/10 rounded-full backdrop-blur-sm animate-bounce" style={{ animationDelay: '0s' }}>
-                        <Code size={16} className="text-purple-400" />
-                      </div>
-                      <div className="absolute bottom-4 left-4 p-2 bg-white/10 rounded-full backdrop-blur-sm animate-bounce" style={{ animationDelay: '0.5s' }}>
-                        <Palette size={16} className="text-pink-400" />
-                      </div>
-                      <div className="absolute top-1/2 left-2 p-2 bg-white/10 rounded-full backdrop-blur-sm animate-bounce" style={{ animationDelay: '1s' }}>
-                        <Star size={16} className="text-cyan-400" />
-                      </div>
+              <p
+                className="text-base leading-relaxed mb-5"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                Saya adalah seorang{" "}
+                <strong style={{ color: "var(--text-primary)" }}>
+                  Junior Developer
+                </strong>{" "}
+                dengan latar belakang pendidikan Sistem dan Teknologi Informasi.
+                Saya memiliki pemahaman yang baik tentang konsep teknologi,
+                terbiasa menggunakan berbagai software komputer, dan memiliki
+                keterampilan pemrograman yang solid.
+              </p>
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                Selain itu, saya selalu antusias untuk menjelajahi bidang baru
+                dan terus mengembangkan kemampuan melalui pembelajaran
+                berkelanjutan dan pengalaman nyata di dunia kerja.
+              </p>
+
+              {/* Stats */}
+              <div className="flex gap-10 mt-10">
+                {[
+                  { value: "4+", label: "Pengalaman Kerja" },
+                  { value: "10+", label: "Projects" },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <div
+                      className="font-serif text-3xl mb-1"
+                      style={{ color: "var(--accent)" }}
+                    >
+                      {s.value}
                     </div>
-                  </div>
-                  
-                  {/* Orbiting Elements */}
-                  <div className="absolute inset-0 animate-spin" style={{ animationDuration: '20s' }}>
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2">
-                      <div className="w-4 h-4 bg-purple-400 rounded-full animate-pulse"></div>
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}>
-                    <div className="absolute bottom-0 right-0 transform translate-x-2 translate-y-2">
-                      <div className="w-3 h-3 bg-pink-400 rounded-full animate-pulse"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Enhanced Skills Section */}
-            <div className="space-y-12">
-              <h3 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                Skills & Expertise
-              </h3>
-              
-              <div className="grid md:grid-cols-3 gap-8">
-                {skills.map((skill, index) => (
-                  <div key={index} className="group relative">
-                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-purple-400/50 transition-all duration-500 hover:transform hover:scale-105 hover:-translate-y-2 relative overflow-hidden">
-                      
-                      {/* Skill Icon */}
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${skill.color} flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 relative z-10`}>
-                        <skill.icon size={28} className="text-white" />
-                      </div>
-
-                      {/* Content */}
-                      <h3 className="text-2xl font-semibold mb-4 group-hover:text-purple-400 transition-colors duration-300">{skill.name}</h3>
-                      
-                      {/* Progress Bar */}
-                      <div className="mb-4">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm text-gray-400">Proficiency</span>
-                          <span className="text-sm font-semibold text-purple-400">{skill.level}%</span>
-                        </div>
-                        <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-                          <div 
-                            className={`h-full bg-gradient-to-r ${skill.color} rounded-full transition-all duration-1000 delay-300`}
-                            style={{ width: `${skill.level}%` }}
-                          ></div>
-                        </div>
-                      </div>
-
-                      {/* Technologies */}
-                      <div className="space-y-2">
-                        <p className="text-sm text-gray-400 mb-3">Technologies:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {skill.technologies.map((tech, techIndex) => (
-                            <span 
-                              key={techIndex} 
-                              className="px-3 py-1 bg-white/10 rounded-full text-xs text-gray-300 border border-white/20 hover:border-purple-400/50 hover:bg-purple-500/20 transition-all duration-300 hover:scale-105"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Animated Background */}
-                      <div className={`absolute inset-0 bg-gradient-to-r ${skill.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-2xl`}></div>
+                    <div
+                      className="text-xs tracking-wider uppercase"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {s.label}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* Skills */}
+            <div className="space-y-5 animate-fade-up delay-200">
+              {skills.map((skill) => (
+                <div
+                  key={skill.name}
+                  className="card p-6"
+                  style={{ transition: "none", transform: "none" }}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center"
+                      style={{ background: "rgba(200,169,110,0.1)" }}
+                    >
+                      <skill.icon size={18} style={{ color: "var(--accent)" }} />
+                    </div>
+                    <div>
+                      <h3
+                        className="text-sm font-semibold"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        {skill.name}
+                      </h3>
+                    </div>
+                    <span
+                      className="ml-auto text-xs font-semibold"
+                      style={{ color: "var(--accent)" }}
+                    >
+                      {skill.level}%
+                    </span>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div
+                    className="w-full h-1 rounded-full mb-4"
+                    style={{ background: "var(--border)" }}
+                  >
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{
+                        width: `${skill.level}%`,
+                        background: "var(--accent)",
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {skill.technologies.map((t) => (
+                      <span key={t} className="tag">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-20 relative">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Latest Projects
-            </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Berikut adalah beberapa project yang telah saya kerjakan dengan passion dan dedikasi tinggi
-            </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-pink-600 mx-auto mt-6 rounded-full"></div>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8 max-w-7xl mx-auto">
-            {projects.map((project, index) => (
-              <div 
-                key={index} 
-                className={`group relative ${project.featured ? 'md:col-span-2' : ''}`}
-                style={{
-                  animationDelay: `${index * 0.2}s`
-                }}
-              >
-                <div className="bg-white/5 backdrop-blur-sm rounded-3xl overflow-hidden border border-white/10 hover:border-purple-400/50 transition-all duration-500 hover:transform hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-purple-500/25 relative">
-                  
-                  {/* Featured Badge */}
-                  {project.featured && (
-                    <div className="absolute top-4 right-4 z-20">
-                      <div className="bg-gradient-to-r from-yellow-400 to-orange-400 px-3 py-1 rounded-full text-xs font-bold text-black flex items-center space-x-1">
-                        <Star size={12} />
-                        <span>FEATURED</span>
+      {/* ── EXPERIENCE & EDUCATION ───────────────────────────────────────── */}
+      <section
+        id="experience"
+        className="py-28 px-6"
+        style={{ background: "var(--bg-secondary)" }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16">
+            {/* Work Experience */}
+            <div>
+              <SectionHeader label="Karier" title="Work Experience" />
+              <div className="relative">
+                {/* Timeline line */}
+                <div
+                  className="absolute left-0 top-2 bottom-2 w-px"
+                  style={{ background: "var(--border)" }}
+                />
+                <div className="space-y-10 pl-8">
+                  {experiences.map((exp, i) => (
+                    <div key={i} className="relative animate-fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                      {/* Dot */}
+                      <div
+                        className="absolute -left-8 top-1.5 w-2.5 h-2.5 rounded-full"
+                        style={{
+                          background:
+                            i === 0 ? "var(--accent)" : "var(--text-muted)",
+                          boxShadow:
+                            i === 0
+                              ? "0 0 0 3px rgba(200,169,110,0.15)"
+                              : "none",
+                          transform: "translateX(-50%) translateX(0.5px)",
+                        }}
+                      />
+                      <div className="flex items-start justify-between gap-4 mb-1">
+                        <div>
+                          <h3
+                            className="text-base font-semibold"
+                            style={{ color: "var(--text-primary)" }}
+                          >
+                            {exp.role}
+                          </h3>
+                          <p
+                            className="text-sm"
+                            style={{ color: "var(--accent)" }}
+                          >
+                            {exp.company}
+                          </p>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <p
+                            className="text-xs"
+                            style={{ color: "var(--text-muted)" }}
+                          >
+                            {exp.year}
+                          </p>
+                          <p
+                            className="text-xs"
+                            style={{ color: "var(--text-muted)" }}
+                          >
+                            {exp.duration}
+                          </p>
+                        </div>
                       </div>
+                      <p
+                        className="text-sm leading-relaxed mt-2"
+                        style={{ color: "var(--text-secondary)" }}
+                      >
+                        {exp.description}
+                      </p>
                     </div>
-                  )}
+                  ))}
+                </div>
+              </div>
+            </div>
 
-                  {/* Image Container */}
-                  <div className="relative overflow-hidden h-64 md:h-72">
-                    <img
-                      src={project.image} 
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    
-                    {/* Overlay Content */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="flex space-x-4">
-                        <a 
-                          href={project.github} 
-                          className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-110"
+            {/* Education */}
+            <div>
+              <SectionHeader label="Pendidikan" title="Education" />
+              <div className="relative">
+                <div
+                  className="absolute left-0 top-2 bottom-2 w-px"
+                  style={{ background: "var(--border)" }}
+                />
+                <div className="space-y-10 pl-8">
+                  {education.map((edu, i) => (
+                    <div key={i} className="relative animate-fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                      <div
+                        className="absolute -left-8 top-1.5 w-2.5 h-2.5 rounded-full"
+                        style={{
+                          background: "var(--accent)",
+                          boxShadow: "0 0 0 3px rgba(200,169,110,0.15)",
+                          transform: "translateX(-50%) translateX(0.5px)",
+                        }}
+                      />
+                      <div className="flex items-start justify-between gap-4 mb-1">
+                        <div>
+                          <h3
+                            className="text-base font-semibold"
+                            style={{ color: "var(--text-primary)" }}
+                          >
+                            {edu.institution}
+                          </h3>
+                          <p
+                            className="text-sm"
+                            style={{ color: "var(--accent)" }}
+                          >
+                            {edu.major}
+                          </p>
+                        </div>
+                        <span
+                          className="text-xs shrink-0"
+                          style={{ color: "var(--text-muted)" }}
                         >
-                          <Github size={24} />
-                        </a>
-                        <a 
-                          href={project.live} 
-                          className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-110"
-                        >
-                          <ExternalLink size={24} />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="p-8">
-                    <h3 className="text-2xl font-bold mb-4 group-hover:text-purple-400 transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-400 mb-6 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-                      {project.description}
-                    </p>
-                    
-                    {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.tech.map((tech, techIndex) => (
-                        <span 
-                          key={techIndex} 
-                          className="px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full text-sm text-purple-300 border border-purple-500/30 hover:border-purple-400/50 hover:bg-purple-500/30 transition-all duration-300 hover:scale-105"
-                        >
-                          {tech}
+                          {edu.year}
                         </span>
-                      ))}
-                    </div>
-                    
-                    {/* Action Links */}
-                    <div className="flex space-x-4">
-                      <a 
-                        href={project.github} 
-                        className="flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-300 hover:scale-105 group/link"
+                      </div>
+                      <p
+                        className="text-sm leading-relaxed mt-2"
+                        style={{ color: "var(--text-secondary)" }}
                       >
-                        <Github size={18} className="group-hover/link:rotate-12 transition-transform duration-300" />
-                        <span className="text-sm font-medium">Source Code</span>
-                      </a>
-                      <a 
-                        href={project.live} 
-                        className="flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-300 hover:scale-105 group/link"
-                      >
-                        <ExternalLink size={18} className="group-hover/link:rotate-12 transition-transform duration-300" />
-                        <span className="text-sm font-medium">Live Demo</span>
-                      </a>
+                        {edu.description}
+                      </p>
                     </div>
-                  </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                  {/* Animated Border */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10"></div>
+      {/* ── PROJECTS ─────────────────────────────────────────────────────── */}
+      <section id="projects" className="py-28 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-end justify-between mb-16">
+            <div>
+              <span
+                className="text-xs font-semibold tracking-widest uppercase"
+                style={{ color: "var(--accent)" }}
+              >
+                Portfolio
+              </span>
+              <h2
+                className="font-serif text-4xl md:text-5xl mt-3"
+                style={{ color: "var(--text-primary)" }}
+              >
+                Projects
+              </h2>
+              <div className="section-divider" />
+            </div>
+            <a
+              href="https://github.com/fatedavi/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-outline hidden md:inline-flex"
+            >
+              <Github size={16} />
+              GitHub
+            </a>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {projects.map((project, i) => (
+              <ProjectCard key={i} project={project} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CONTACT ──────────────────────────────────────────────────────── */}
+      <section
+        id="contact"
+        className="py-28 px-6"
+        style={{ background: "var(--bg-secondary)" }}
+      >
+        <div className="max-w-3xl mx-auto text-center">
+          <span
+            className="text-xs font-semibold tracking-widest uppercase"
+            style={{ color: "var(--accent)" }}
+          >
+            Kontak
+          </span>
+          <h2
+            className="font-serif text-4xl md:text-5xl mt-3 mb-6"
+            style={{ color: "var(--text-primary)" }}
+          >
+            Mari Berkolaborasi
+          </h2>
+          <p
+            className="text-base leading-relaxed mb-12 max-w-lg mx-auto"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Punya project menarik atau ingin mendiskusikan peluang kerja sama?
+            Saya dengan senang hati akan menghubungi Anda kembali dalam waktu
+            24 jam.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4 mb-14">
+            <a href="mailto:achmaddviii@gmail.com" className="btn-primary">
+              <Mail size={16} />
+              Kirim Email
+            </a>
+            <a
+              href="https://github.com/fatedavi/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-outline"
+            >
+              <Github size={16} />
+              GitHub
+            </a>
+          </div>
+
+          {/* Contact details */}
+          <div
+            className="flex flex-wrap justify-center gap-8 pt-10"
+            style={{ borderTop: "1px solid var(--border)" }}
+          >
+            {[
+              {
+                icon: Mail,
+                label: "Email",
+                value: "achmaddviii@gmail.com",
+                href: "mailto:achmaddviii@gmail.com",
+              },
+              {
+                icon: Phone,
+                label: "WhatsApp",
+                value: "+62 856-4915-0049",
+                href: "tel:+6285649150049",
+              },
+              {
+                icon: MapPin,
+                label: "Lokasi",
+                value: "Surabaya, Indonesia",
+                href: null,
+              },
+            ].map(({ icon: Icon, label, value, href }) => (
+              <div key={label} className="flex items-center gap-3 group">
+                <div
+                  className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                  style={{ background: "rgba(200,169,110,0.1)" }}
+                >
+                  <Icon size={16} style={{ color: "var(--accent)" }} />
+                </div>
+                <div className="text-left">
+                  <p
+                    className="text-xs tracking-wider uppercase mb-0.5"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    {label}
+                  </p>
+                  {href ? (
+                    <a
+                      href={href}
+                      className="text-sm transition-colors duration-200"
+                      style={{ color: "var(--text-secondary)" }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = "var(--accent)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "var(--text-secondary)")
+                      }
+                    >
+                      {value}
+                    </a>
+                  ) : (
+                    <p
+                      className="text-sm"
+                      style={{ color: "var(--text-secondary)" }}
+                    >
+                      {value}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* CTA Section */}
-          <div className="text-center mt-16">
-            <p className="text-gray-400 mb-6">Ingin melihat lebih banyak project?</p>
-            <a 
-              href="https://github.com/fatedavi/" 
-              className="inline-flex items-center space-x-3 bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-full text-white font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group"
+      {/* ── FOOTER ───────────────────────────────────────────────────────── */}
+      <footer
+        className="py-10 px-6"
+        style={{ borderTop: "1px solid var(--border)" }}
+      >
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <span
+              className="font-serif text-xl"
+              style={{ color: "var(--accent)" }}
             >
-              <Github size={20} className="group-hover:rotate-12 transition-transform duration-300" />
-              <span>GitHub Repository</span>
-            </a>
+              AD.
+            </span>
+            <p
+              className="text-xs mt-1"
+              style={{ color: "var(--text-muted)" }}
+            >
+              © 2025 Achmad Dafi Ihsannudin. Dibuat di Surabaya.
+            </p>
           </div>
-        </div>
-      </section>
 
-     
-
-      {/* Contact Section */}
-      <section id="contact" className="py-20 relative">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-12">
-              <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Mari Berkolaborasi
-              </h2>
-              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                Punya project menarik atau ide brilian? Mari diskusikan bagaimana kita bisa bekerja sama 
-                untuk mewujudkan visi Anda menjadi kenyataan digital yang luar biasa.
-              </p>
-            </div>
-            
-            <div className="space-y-8">
-              {/* Main CTA */}
-              <div className="group relative inline-block">
-                <a 
-                  href="mailto:achmaddviii@gmail.com" 
-                  className="inline-flex items-center space-x-4 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 px-10 py-5 rounded-full text-white font-bold text-lg hover:from-purple-700 hover:via-pink-700 hover:to-red-700 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-purple-500/50 relative overflow-hidden group"
-                >
-                  <Mail size={24} className="group-hover:rotate-12 transition-transform duration-300" />
-                  <span>Mari Bicara Project!</span>
-                  <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full"></div>
-                </a>
-              </div>
-
-              {/* Alternative Contact Methods */}
-              <div className="flex flex-wrap justify-center gap-4 pt-4">
-                <a 
-                  href="https://github.com/fatedavi/" 
-                  className="flex items-center space-x-2 bg-white/10 px-6 py-3 rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-105 group border border-white/20 hover:border-purple-400/50"
-                >
-                  <Github size={20} className="group-hover:rotate-12 transition-transform duration-300" />
-                  <span>GitHub</span>
-                </a>
-                <a 
-                  href="#" 
-                  className="flex items-center space-x-2 bg-white/10 px-6 py-3 rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-105 group border border-white/20 hover:border-purple-400/50"
-                >
-                  <Linkedin size={20} className="group-hover:rotate-12 transition-transform duration-300" />
-                  <span>LinkedIn</span>
-                </a>
-              </div>
-
-              {/* Contact Info */}
-              <div className="pt-8 space-y-4">
-                <div className="flex flex-wrap justify-center gap-8 text-gray-400">
-                  <div className="flex items-center space-x-2 hover:text-white transition-colors duration-300">
-                    <Mail size={18} />
-                    <span>achmaddviii@gmail.com</span>
-                  </div>
-                  <div className="flex items-center space-x-2 hover:text-white transition-colors duration-300">
-                    <span>📍</span>
-                    <span>Surabaya, Indonesia</span>
-                  </div>
-                </div>
-                
-                <p className="text-gray-500 text-sm">
-                  Response time: Usually within 24 hours ⚡
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Floating Contact Cards */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/4 left-10 animate-float">
-            <div className="bg-purple-500/10 backdrop-blur-sm rounded-lg p-4 border border-purple-500/20">
-              <Code size={24} className="text-purple-400" />
-            </div>
-          </div>
-          <div className="absolute top-1/3 right-10 animate-float" style={{ animationDelay: '1s' }}>
-            <div className="bg-pink-500/10 backdrop-blur-sm rounded-lg p-4 border border-pink-500/20">
-              <Palette size={24} className="text-pink-400" />
-            </div>
-          </div>
-          <div className="absolute bottom-1/4 left-1/4 animate-float" style={{ animationDelay: '2s' }}>
-            <div className="bg-cyan-500/10 backdrop-blur-sm rounded-lg p-4 border border-cyan-500/20">
-              <Zap size={24} className="text-cyan-400" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-12 border-t border-white/10 relative overflow-hidden">
-        <div className="container mx-auto px-6">
-          <div className="text-center space-y-6">
-            {/* Logo/Brand */}
-            <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent hover:scale-105 transition-transform cursor-pointer">
-              <span className="inline-block hover:rotate-12 transition-transform duration-300">⚡</span>
-              Achmad Dafi Ihsannudin
-            </div>
-            
-            {/* Social Links */}
-            <div className="flex justify-center space-x-6">
+          <div className="flex items-center gap-6">
+            <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+              Built with{" "}
+              <span style={{ color: "var(--accent)" }}>Next.js</span> &{" "}
+              <span style={{ color: "var(--accent)" }}>Tailwind CSS</span>
+            </p>
+            <div className="flex items-center gap-4">
               {[
-                { Icon: Github, href: "#" },
-                { Icon: Linkedin, href: "#" },
-                { Icon: Mail, href: "#" }
-              ].map(({ Icon, href }, index) => (
-                <a 
-                  key={index}
-                  href={href} 
-                  className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:rotate-12 group"
+                {
+                  icon: Github,
+                  href: "https://github.com/fatedavi/",
+                  label: "GitHub",
+                },
+                {
+                  icon: Mail,
+                  href: "mailto:achmaddviii@gmail.com",
+                  label: "Email",
+                },
+              ].map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="transition-colors duration-200"
+                  style={{ color: "var(--text-muted)" }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "var(--accent)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "var(--text-muted)")
+                  }
                 >
-                  <Icon size={20} className="group-hover:scale-110 transition-transform duration-300" />
+                  <Icon size={18} />
                 </a>
               ))}
             </div>
-
-            {/* Copyright */}
-            <div className="text-gray-400 space-y-2">
-              <p>&copy; 2024 Achmad Dafi. Dibuat di Surabaya</p>
-              <p className="text-sm">
-                Powered by <span className="text-purple-400">Next.js</span> • 
-                Styled with <span className="text-cyan-400">Tailwind CSS</span> • 
-                Deployed on <span className="text-pink-400">Vercel</span>
-              </p>
-            </div>
           </div>
         </div>
-
-        {/* Animated Footer Background */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600"></div>
-        </div>
       </footer>
-
-      {/* Custom Styles for Additional Animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes gradient-shift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-
-        .animate-gradient {
-          background-size: 200% 200%;
-          animation: gradient-shift 3s ease infinite;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-          background: rgba(30, 41, 59, 0.5);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #8b5cf6, #ec4899);
-          border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(180deg, #7c3aed, #db2777);
-        }
-
-        /* Smooth scroll behavior */
-        html {
-          scroll-behavior: smooth;
-        }
-
-        /* Glitch effect keyframes */
-        @keyframes glitch-1 {
-          0%, 100% { transform: translate(0); }
-          20% { transform: translate(-2px, 2px); }
-          40% { transform: translate(-2px, -2px); }
-          60% { transform: translate(2px, 2px); }
-          80% { transform: translate(2px, -2px); }
-        }
-
-        @keyframes glitch-2 {
-          0%, 100% { transform: translate(0); }
-          20% { transform: translate(2px, -2px); }
-          40% { transform: translate(2px, 2px); }
-          60% { transform: translate(-2px, -2px); }
-          80% { transform: translate(-2px, 2px); }
-        }
-      `}</style>
     </div>
   );
-};
-
-export default Portfolio;
+}

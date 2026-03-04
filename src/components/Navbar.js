@@ -2,26 +2,33 @@
 
 import React, { useState, useEffect } from "react";
 
+const navItems = ["home", "about", "projects", "contact"];
+
 export default function Navbar() {
-  const [scrollY, setScrollY] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [mounted, setMounted] = useState(false);
 
-  // Track scroll
   useEffect(() => {
     setMounted(true);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
 
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-
-    setScrollY(window.scrollY);
-    
-
+      // Active section detection
+      const sections = navItems.map((id) => document.getElementById(id));
+      const scrollPos = window.scrollY + 100;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if (sections[i] && sections[i].offsetTop <= scrollPos) {
+          setActiveSection(navItems[i]);
+          break;
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll ke section tertentu
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) {
@@ -31,92 +38,106 @@ export default function Navbar() {
     }
   };
 
-  // Hindari hydration mismatch
   if (!mounted) return null;
 
   return (
-    <nav className="fixed top-0 w-full z-40 transition-all duration-300">
+    <nav
+      className="fixed top-0 w-full z-50 transition-all duration-300"
+      style={{
+        backgroundColor: scrolled
+          ? "rgba(11,12,15,0.92)"
+          : "rgba(11,12,15,0.0)",
+        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
+        backdropFilter: scrolled ? "blur(16px)" : "none",
+      }}
+    >
+      <div className="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+        {/* Logo */}
+        <button
+          onClick={() => scrollToSection("home")}
+          className="font-serif text-xl tracking-wide"
+          style={{ color: "var(--accent)" }}
+        >
+          AD<span style={{ color: "var(--text-secondary)" }}>.</span>
+        </button>
+
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => (
+            <button
+              key={item}
+              onClick={() => scrollToSection(item)}
+              className="text-sm capitalize tracking-widest transition-colors duration-200"
+              style={{
+                color:
+                  activeSection === item
+                    ? "var(--accent)"
+                    : "var(--text-secondary)",
+                letterSpacing: "0.08em",
+              }}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden flex flex-col gap-1.5 p-1"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span
+            className="block w-6 h-0.5 transition-all duration-300"
+            style={{
+              background: "var(--text-primary)",
+              transform: isMenuOpen ? "rotate(45deg) translate(3px, 3px)" : "",
+            }}
+          />
+          <span
+            className="block w-4 h-0.5 transition-all duration-300"
+            style={{
+              background: "var(--text-primary)",
+              opacity: isMenuOpen ? 0 : 1,
+            }}
+          />
+          <span
+            className="block w-6 h-0.5 transition-all duration-300"
+            style={{
+              background: "var(--text-primary)",
+              transform: isMenuOpen
+                ? "rotate(-45deg) translate(3px, -3px)"
+                : "",
+            }}
+          />
+        </button>
+      </div>
+
+      {/* Mobile menu */}
       <div
-        className="backdrop-blur-xl border-b border-white/10"
+        className="md:hidden overflow-hidden transition-all duration-400"
         style={{
-          backgroundColor:
-            scrollY > 50 ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.2)",
+          maxHeight: isMenuOpen ? "200px" : "0",
+          background: "rgba(11,12,15,0.97)",
+          borderBottom: isMenuOpen ? "1px solid rgba(255,255,255,0.07)" : "none",
         }}
       >
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            {/* Logo */}
-            <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent hover:scale-105 transition-transform cursor-pointer">
-              ⚡ Portfolio
-            </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex space-x-8">
-              {["home", "about", "projects",  "contact"].map(
-                (item, idx) => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    className={`relative capitalize transition-all duration-300 hover:text-purple-400 group ${
-                      activeSection === item
-                        ? "text-purple-400"
-                        : "text-white"
-                    }`}
-                    style={{ animationDelay: `${idx * 0.1}s` }}
-                  >
-                    {item}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 group-hover:w-full transition-all duration-300"></span>
-                  </button>
-                )
-              )}
-            </div>
-
-            {/* Mobile Menu Button */}
+        <div className="px-6 py-4 flex flex-col gap-4">
+          {navItems.map((item) => (
             <button
-              className="md:hidden relative group"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              key={item}
+              onClick={() => scrollToSection(item)}
+              className="text-sm capitalize text-left tracking-widest transition-colors duration-200"
+              style={{
+                color:
+                  activeSection === item
+                    ? "var(--accent)"
+                    : "var(--text-secondary)",
+              }}
             >
-              <div className="relative w-6 h-6">
-                <span
-                  className={`absolute top-0 left-0 w-full h-0.5 bg-white transform transition-all duration-300 ${
-                    isMenuOpen ? "rotate-45 top-3" : ""
-                  }`}
-                ></span>
-                <span
-                  className={`absolute top-3 left-0 w-full h-0.5 bg-white transform transition-all duration-300 ${
-                    isMenuOpen ? "opacity-0" : ""
-                  }`}
-                ></span>
-                <span
-                  className={`absolute top-6 left-0 w-full h-0.5 bg-white transform transition-all duration-300 ${
-                    isMenuOpen ? "-rotate-45 top-3" : ""
-                  }`}
-                ></span>
-              </div>
+              {item}
             </button>
-          </div>
-
-          {/* Mobile Menu */}
-          <div
-            className={`md:hidden overflow-hidden transition-all duration-500 ${
-              isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
-            }`}
-          >
-            <div className="pt-4 pb-4 space-y-2">
-              {["home", "about", "projects",  "contact"].map(
-                (item, idx) => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    className="block w-full text-left py-3 capitalize hover:text-purple-400 transition-all duration-300 hover:translate-x-2 hover:bg-white/5 rounded-lg px-4"
-                    style={{ animationDelay: `${idx * 0.1}s` }}
-                  >
-                    {item}
-                  </button>
-                )
-              )}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </nav>

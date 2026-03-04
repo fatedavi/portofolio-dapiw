@@ -2,16 +2,16 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 
 export const metadata = {
-  title: "My Portfolio",
-  description: "Created with Next.js",
+  title: "Achmad Dafi Ihsannudin — Junior Developer",
+  description: "Portfolio of Achmad Dafi Ihsannudin, a Junior Developer specializing in web development with Laravel, Next.js, and Vue.js.",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body>
         <Navbar />
-        <main className="p-6">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );
