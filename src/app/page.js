@@ -1,47 +1,21 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Github, Linkedin, Mail, ExternalLink, Phone, MapPin, Code, Layers, Server, ChevronDown, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import {
+  Github,
+  Mail,
+  Phone,
+  MapPin,
+  Code,
+  Layers,
+  Server,
+  ChevronDown,
+  ArrowUpRight,
+} from "lucide-react";
+import ProjectCard from "@/components/ProjectCard";
+import { projects } from "@/data/projects";
 
 // ── DATA ───────────────────────────────────────────────────────────────────
-
-const projects = [
-  {
-    title: "Invoice Management System & HR Management",
-    description:
-      "Full-stack Invoice Management System dan HR Management dengan Laravel, MySQL, dan Tailwind CSS yang terintegrasi dengan database lama perusahaan.",
-    tech: ["Laravel", "Vue.js", "Tailwind CSS", "MySQL"],
-    image: "/images/project.png",
-    github: "https://github.com/fatedavi/MPA-project",
-    live: "https://epower.multipowerabadi.co.id/",
-  },
-  {
-    title: "Dashboard Sekolah Berbasis Web",
-    description:
-      "Dashboard berbasis web dengan fitur manajemen siswa, kelas, absen, dan nilai untuk keperluan administrasi sekolah.",
-    tech: ["Laravel", "Vue.js", "MySQL"],
-    image: "/images/project2.png",
-    github: "https://github.com/fatedavi/akademik-app",
-    live: null,
-  },
-  {
-    title: "Aplikasi Web POS",
-    description:
-      "Aplikasi kasir (Point of Sale) sederhana berbasis web menggunakan CodeIgniter 3 untuk kebutuhan toko ritel.",
-    tech: ["CodeIgniter 3", "PHP", "MySQL"],
-    image: "/images/Ci3.png",
-    github: null,
-    live: null,
-  },
-  {
-    title: "Project Team Digital Agency",
-    description:
-      "Platform web Creative Digital Agency dengan modul manajemen project, Accounting, dan HR Management untuk tim agensi kreatif.",
-    tech: ["Laravel", "Vue.js", "MongoDB", "Symfony", "PHP Native"],
-    image: "/images/Fastrack.png",
-    github: null,
-    live: null,
-  },
-];
 
 const skills = [
   {
@@ -107,6 +81,14 @@ const education = [
     description:
       "Mempelajari fondasi teknik komputer termasuk komponen hardware dan keterampilan perakitan PC/laptop. Pernah mengikuti kompetisi Cloud Computing antar kabupaten.",
   },
+  {
+    year: "2022 – 2026",
+    institution: "Institut Teknologi Adhitama Surabaya",
+    major: "Sistem dan Teknologi Informasi",
+    description:
+      "Mempelajari konsep dasar teknologi informasi, pengembangan perangkat lunak, dan manajemen sistem informasi. Aktif dalam proyek pengembangan aplikasi berbasis web.",
+    GPA: "3.44/4.00",
+  },
 ];
 
 // ── COMPONENTS ─────────────────────────────────────────────────────────────
@@ -131,91 +113,6 @@ function SectionHeader({ label, title }) {
   );
 }
 
-function ProjectCard({ project, index }) {
-  return (
-    <div
-      className="card animate-fade-up"
-      style={{ animationDelay: `${index * 0.1}s`, animationFillMode: "both" }}
-    >
-      {/* Image */}
-      <div
-        className="overflow-hidden rounded-t-2xl"
-        style={{ height: "220px", background: "var(--bg-secondary)" }}
-      >
-        <img
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-          onError={(e) => {
-            e.target.style.display = "none";
-            e.target.parentElement.style.background =
-              "linear-gradient(135deg, #161820, #1e2030)";
-          }}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="p-7">
-        <h3
-          className="text-lg font-semibold mb-3 leading-snug"
-          style={{ color: "var(--text-primary)" }}
-        >
-          {project.title}
-        </h3>
-        <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--text-secondary)" }}>
-          {project.description}
-        </p>
-
-        {/* Tech tags */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {project.tech.map((t) => (
-            <span key={t} className="tag">
-              {t}
-            </span>
-          ))}
-        </div>
-
-        {/* Links */}
-        <div className="flex items-center gap-4">
-          {project.github && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-sm transition-colors duration-200"
-              style={{ color: "var(--text-secondary)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
-            >
-              <Github size={15} />
-              Source
-            </a>
-          )}
-          {project.live && (
-            <a
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-sm transition-colors duration-200"
-              style={{ color: "var(--text-secondary)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
-            >
-              <ExternalLink size={15} />
-              Live
-            </a>
-          )}
-          {!project.github && !project.live && (
-            <span className="text-xs" style={{ color: "var(--text-muted)" }}>
-              Private Project
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ── MAIN ───────────────────────────────────────────────────────────────────
 
 export default function Portfolio() {
@@ -230,8 +127,9 @@ export default function Portfolio() {
   };
 
   return (
-    <div style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-
+    <div
+      style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}
+    >
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section
         id="home"
@@ -269,7 +167,7 @@ export default function Portfolio() {
               border: "1px solid rgba(200,169,110,0.2)",
             }}
           >
-            Junior Developer · Surabaya, Indonesia
+            Fullstack Developer · Surabaya, Indonesia
           </span>
 
           <h1
@@ -294,10 +192,10 @@ export default function Portfolio() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 animate-fade-up delay-300">
-            <button onClick={() => scrollTo("projects")} className="btn-primary">
+            <Link href="/projects" className="btn-primary">
               Lihat Projects
               <ArrowUpRight size={16} />
-            </button>
+            </Link>
             <button onClick={() => scrollTo("contact")} className="btn-outline">
               Hubungi Saya
             </button>
@@ -306,7 +204,11 @@ export default function Portfolio() {
           {/* Social links */}
           <div className="flex justify-center gap-6 mt-12 animate-fade-up delay-400">
             {[
-              { icon: Github, href: "https://github.com/fatedavi/", label: "GitHub" },
+              {
+                icon: Github,
+                href: "https://github.com/fatedavi/",
+                label: "GitHub",
+              },
               {
                 icon: Mail,
                 href: "mailto:achmaddviii@gmail.com",
@@ -340,9 +242,7 @@ export default function Portfolio() {
           onClick={() => scrollTo("about")}
           className="absolute bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-200"
           style={{ color: "var(--text-muted)" }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.color = "var(--accent)")
-          }
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
           onMouseLeave={(e) =>
             (e.currentTarget.style.color = "var(--text-muted)")
           }
@@ -374,7 +274,12 @@ export default function Portfolio() {
                 <img
                   src="/images/profile.jpg"
                   alt="Achmad Dafi Ihsannudin"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "center top",
+                  }}
                   onError={(e) => {
                     e.target.style.display = "none";
                     e.target.parentElement.innerHTML =
@@ -389,7 +294,7 @@ export default function Portfolio() {
               >
                 Saya adalah seorang{" "}
                 <strong style={{ color: "var(--text-primary)" }}>
-                  Junior Developer
+                  Fullstack Developer
                 </strong>{" "}
                 dengan latar belakang pendidikan Sistem dan Teknologi Informasi.
                 Saya memiliki pemahaman yang baik tentang konsep teknologi,
@@ -442,7 +347,10 @@ export default function Portfolio() {
                       className="w-9 h-9 rounded-lg flex items-center justify-center"
                       style={{ background: "rgba(200,169,110,0.1)" }}
                     >
-                      <skill.icon size={18} style={{ color: "var(--accent)" }} />
+                      <skill.icon
+                        size={18}
+                        style={{ color: "var(--accent)" }}
+                      />
                     </div>
                     <div>
                       <h3
@@ -507,7 +415,11 @@ export default function Portfolio() {
                 />
                 <div className="space-y-10 pl-8">
                   {experiences.map((exp, i) => (
-                    <div key={i} className="relative animate-fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                    <div
+                      key={i}
+                      className="relative animate-fade-up"
+                      style={{ animationDelay: `${i * 0.1}s` }}
+                    >
                       {/* Dot */}
                       <div
                         className="absolute -left-8 top-1.5 w-2.5 h-2.5 rounded-full"
@@ -573,7 +485,11 @@ export default function Portfolio() {
                 />
                 <div className="space-y-10 pl-8">
                   {education.map((edu, i) => (
-                    <div key={i} className="relative animate-fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                    <div
+                      key={i}
+                      className="relative animate-fade-up"
+                      style={{ animationDelay: `${i * 0.1}s` }}
+                    >
                       <div
                         className="absolute -left-8 top-1.5 w-2.5 h-2.5 rounded-full"
                         style={{
@@ -610,6 +526,14 @@ export default function Portfolio() {
                       >
                         {edu.description}
                       </p>
+                      {edu.GPA && (
+                        <p
+                          className="text-sm leading-relaxed mt-1"
+                          style={{ color: "var(--text-secondary)" }}
+                        >
+                          GPA: {edu.GPA}
+                        </p>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -638,20 +562,26 @@ export default function Portfolio() {
               </h2>
               <div className="section-divider" />
             </div>
-            <a
-              href="https://github.com/fatedavi/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-outline hidden md:inline-flex"
-            >
-              <Github size={16} />
-              GitHub
-            </a>
+            <div className="hidden md:flex items-center gap-3">
+              <Link href="/projects" className="btn-outline">
+                <ArrowUpRight size={16} />
+                Lihat Semua
+              </Link>
+              <a
+                href="https://github.com/fatedavi/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+              >
+                <Github size={16} />
+                GitHub
+              </a>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {projects.map((project, i) => (
-              <ProjectCard key={i} project={project} index={i} />
+              <ProjectCard key={project.id} project={project} index={i} />
             ))}
           </div>
         </div>
@@ -681,8 +611,8 @@ export default function Portfolio() {
             style={{ color: "var(--text-secondary)" }}
           >
             Punya project menarik atau ingin mendiskusikan peluang kerja sama?
-            Saya dengan senang hati akan menghubungi Anda kembali dalam waktu
-            24 jam.
+            Saya dengan senang hati akan menghubungi Anda kembali dalam waktu 24
+            jam.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-14">
@@ -782,19 +712,15 @@ export default function Portfolio() {
             >
               AD.
             </span>
-            <p
-              className="text-xs mt-1"
-              style={{ color: "var(--text-muted)" }}
-            >
+            <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
               © 2025 Achmad Dafi Ihsannudin. Dibuat di Surabaya.
             </p>
           </div>
 
           <div className="flex items-center gap-6">
             <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-              Built with{" "}
-              <span style={{ color: "var(--accent)" }}>Next.js</span> &{" "}
-              <span style={{ color: "var(--accent)" }}>Tailwind CSS</span>
+              Built with <span style={{ color: "var(--accent)" }}>Next.js</span>{" "}
+              & <span style={{ color: "var(--accent)" }}>Tailwind CSS</span>
             </p>
             <div className="flex items-center gap-4">
               {[

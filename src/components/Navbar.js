@@ -1,42 +1,82 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
-const navItems = ["home", "about", "projects", "contact"];
+const navItems = [
+  { id: "home", label: "Home", href: "/" },
+  { id: "about", label: "About", href: "/#about" },
+  { id: "projects", label: "Projects", href: "/projects" },
+  { id: "contact", label: "Contact", href: "/#contact" },
+];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
 
+      if (pathname !== "/") return;
+
       // Active section detection
-      const sections = navItems.map((id) => document.getElementById(id));
+      const scrollableItems = navItems.filter((item) => item.id !== "projects");
+      const sections = scrollableItems.map((item) => document.getElementById(item.id));
       const scrollPos = window.scrollY + 100;
       for (let i = sections.length - 1; i >= 0; i--) {
         if (sections[i] && sections[i].offsetTop <= scrollPos) {
-          setActiveSection(navItems[i]);
+          setActiveSection(scrollableItems[i].id);
           break;
         }
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
+
+  // Scroll ke section tujuan setelah pindah halaman (contoh: /#about)
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  }, [pathname]);
 
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
       setActiveSection(id);
-      setIsMenuOpen(false);
     }
   };
+
+  const handleNav = (item) => {
+    setIsMenuOpen(false);
+
+    if (item.id === "projects") {
+      router.push("/projects");
+      return;
+    }
+
+    if (pathname === "/") {
+      scrollToSection(item.id);
+    } else {
+      router.push(item.href);
+    }
+  };
+
+  const isActive = (item) =>
+    item.id === "projects" ? pathname === "/projects" : pathname === "/" && activeSection === item.id;
 
   if (!mounted) return null;
 
@@ -54,7 +94,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
         {/* Logo */}
         <button
-          onClick={() => scrollToSection("home")}
+          onClick={() => handleNav(navItems[0])}
           className="font-serif text-xl tracking-wide"
           style={{ color: "var(--accent)" }}
         >
@@ -63,22 +103,35 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <button
-              key={item}
-              onClick={() => scrollToSection(item)}
-              className="text-sm capitalize tracking-widest transition-colors duration-200"
-              style={{
-                color:
-                  activeSection === item
+          {navItems.map((item) =>
+            item.id === "projects" ? (
+              <Link
+                key={item.id}
+                href={item.href}
+                className="text-sm capitalize tracking-widest transition-colors duration-200"
+                style={{
+                  color: isActive(item) ? "var(--accent)" : "var(--text-secondary)",
+                  letterSpacing: "0.08em",
+                }}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <button
+                key={item.id}
+                onClick={() => handleNav(item)}
+                className="text-sm capitalize tracking-widest transition-colors duration-200"
+                style={{
+                  color: isActive(item)
                     ? "var(--accent)"
                     : "var(--text-secondary)",
-                letterSpacing: "0.08em",
-              }}
-            >
-              {item}
-            </button>
-          ))}
+                  letterSpacing: "0.08em",
+                }}
+              >
+                {item.label}
+              </button>
+            )
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -123,21 +176,36 @@ export default function Navbar() {
         }}
       >
         <div className="px-6 py-4 flex flex-col gap-4">
-          {navItems.map((item) => (
-            <button
-              key={item}
-              onClick={() => scrollToSection(item)}
-              className="text-sm capitalize text-left tracking-widest transition-colors duration-200"
-              style={{
-                color:
-                  activeSection === item
+          {navItems.map((item) =>
+            item.id === "projects" ? (
+              <Link
+                key={item.id}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm capitalize text-left tracking-widest transition-colors duration-200"
+                style={{
+                  color: isActive(item)
                     ? "var(--accent)"
                     : "var(--text-secondary)",
-              }}
-            >
-              {item}
-            </button>
-          ))}
+                }}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <button
+                key={item.id}
+                onClick={() => handleNav(item)}
+                className="text-sm capitalize text-left tracking-widest transition-colors duration-200"
+                style={{
+                  color: isActive(item)
+                    ? "var(--accent)"
+                    : "var(--text-secondary)",
+                }}
+              >
+                {item.label}
+              </button>
+            )
+          )}
         </div>
       </div>
     </nav>
