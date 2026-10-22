@@ -23,13 +23,11 @@ export const metadata = {
     locale: "id_ID",
     url: siteConfig.url,
     siteName: `${siteConfig.name} — Portfolio`,
-    title: `${siteConfig.name} — ${siteConfig.role}`,
-    description: siteConfig.description,
+    // title & description diwarisi dari field title/description tiap halaman
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} — ${siteConfig.role}`,
-    description: siteConfig.description,
+    // title & description diwarisi dari field title/description tiap halaman
   },
   robots: {
     index: true,

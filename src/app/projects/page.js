@@ -2,11 +2,18 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Github, Mail } from "lucide-react";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/data/projects";
+import { siteConfig } from "@/lib/site";
 
 export const metadata = {
-  title: "Projects — Achmad Dafi Ihsannudin",
+  title: "Projects",
   description:
     "Daftar project yang pernah saya kerjakan, mulai dari aplikasi manajemen, dashboard administrasi, hingga platform digital hub.",
+  alternates: {
+    canonical: "/projects",
+  },
+  openGraph: {
+    url: `${siteConfig.url}/projects`,
+  },
 };
 
 export default function Projects() {
@@ -89,12 +96,12 @@ export default function Projects() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="mailto:achmaddviii@gmail.com" className="btn-primary">
+            <a href={`mailto:${siteConfig.email}`} className="btn-primary">
               <Mail size={16} />
               Kirim Email
             </a>
             <a
-              href="https://github.com/fatedavi/"
+              href={siteConfig.github}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline"

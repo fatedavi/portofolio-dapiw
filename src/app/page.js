@@ -12,6 +12,7 @@ import {
 import ProjectCard from "@/components/ProjectCard";
 import SkillsSection from "@/components/SkillsSection";
 import { projects } from "@/data/projects";
+import { siteConfig } from "@/lib/site";
 
 // ── DATA ───────────────────────────────────────────────────────────────────
 
@@ -144,9 +145,8 @@ export default function Portfolio() {
               border: "1px solid rgba(200,169,110,0.2)",
             }}
           >
-            Fullstack Developer · Surabaya, Indonesia
+            {siteConfig.tagline}
           </span>
-
           <h1
             className="font-serif mb-6 leading-tight animate-fade-up delay-100"
             style={{
@@ -183,15 +183,19 @@ export default function Portfolio() {
             {[
               {
                 icon: Github,
-                href: "https://github.com/fatedavi/",
+                href: siteConfig.github,
                 label: "GitHub",
               },
               {
                 icon: Mail,
-                href: "mailto:achmaddviii@gmail.com",
+                href: `mailto:${siteConfig.email}`,
                 label: "Email",
               },
-              { icon: Phone, href: "tel:+6285649150049", label: "Phone" },
+              {
+                icon: Phone,
+                href: `tel:${siteConfig.phone}`,
+                label: "Phone",
+              },
             ].map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
@@ -294,8 +298,8 @@ export default function Portfolio() {
               {/* Stats */}
               <div className="flex gap-10 mt-10">
                 {[
-                  { value: "4+", label: "Pengalaman Kerja" },
-                  { value: "10+", label: "Projects" },
+                  { value: `${experiences.length}`, label: "Pengalaman Kerja" },
+                  { value: `${projects.length}`, label: "Projects" },
                 ].map((s) => (
                   <div key={s.label}>
                     <div
@@ -492,7 +496,7 @@ export default function Portfolio() {
                 Lihat Semua
               </Link>
               <a
-                href="https://github.com/fatedavi/"
+                href={siteConfig.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-outline"
@@ -540,12 +544,12 @@ export default function Portfolio() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-14">
-            <a href="mailto:achmaddviii@gmail.com" className="btn-primary">
+            <a href={`mailto:${siteConfig.email}`} className="btn-primary">
               <Mail size={16} />
               Kirim Email
             </a>
             <a
-              href="https://github.com/fatedavi/"
+              href={siteConfig.github}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline"
@@ -564,19 +568,19 @@ export default function Portfolio() {
               {
                 icon: Mail,
                 label: "Email",
-                value: "achmaddviii@gmail.com",
-                href: "mailto:achmaddviii@gmail.com",
+                value: siteConfig.email,
+                href: `mailto:${siteConfig.email}`,
               },
               {
                 icon: Phone,
                 label: "WhatsApp",
-                value: "+62 856-4915-0049",
-                href: "tel:+6285649150049",
+                value: siteConfig.phoneDisplay,
+                href: `tel:${siteConfig.phone}`,
               },
               {
                 icon: MapPin,
                 label: "Lokasi",
-                value: "Surabaya, Indonesia",
+                value: siteConfig.location,
                 href: null,
               },
             ].map(({ icon: Icon, label, value, href }) => (
@@ -637,7 +641,7 @@ export default function Portfolio() {
               AD.
             </span>
             <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
-              © 2025 Achmad Dafi Ihsannudin. Dibuat di Surabaya.
+              © {new Date().getFullYear()} {siteConfig.name}. Dibuat di Surabaya.
             </p>
           </div>
 
@@ -655,7 +659,7 @@ export default function Portfolio() {
                 },
                 {
                   icon: Mail,
-                  href: "mailto:achmaddviii@gmail.com",
+                  href: `mailto:${siteConfig.email}`,
                   label: "Email",
                 },
               ].map(({ icon: Icon, href, label }) => (
