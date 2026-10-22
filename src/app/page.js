@@ -6,37 +6,14 @@ import {
   Mail,
   Phone,
   MapPin,
-  Code,
-  Layers,
-  Server,
   ChevronDown,
   ArrowUpRight,
 } from "lucide-react";
 import ProjectCard from "@/components/ProjectCard";
+import SkillsSection from "@/components/SkillsSection";
 import { projects } from "@/data/projects";
 
 // ── DATA ───────────────────────────────────────────────────────────────────
-
-const skills = [
-  {
-    name: "Frontend Development",
-    icon: Code,
-    technologies: ["Next.js", "Vue.js", "Tailwind CSS", "HTML/CSS"],
-    level: 80,
-  },
-  {
-    name: "Backend Development",
-    icon: Server,
-    technologies: ["Laravel", "PHP Native", "Node.js", "MySQL", "MongoDB"],
-    level: 80,
-  },
-  {
-    name: "UI/UX & Tools",
-    icon: Layers,
-    technologies: ["Figma", "Git", "REST API"],
-    level: 70,
-  },
-];
 
 const experiences = [
   {
@@ -257,13 +234,14 @@ export default function Portfolio() {
         <div className="max-w-6xl mx-auto">
           <SectionHeader label="Tentang Saya" title="About Me" />
 
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            {/* Bio */}
+          <div className="grid lg:grid-cols-[220px_1fr] gap-10 lg:gap-16 items-start">
+            {/* Photo */}
             <div className="animate-fade-up">
               <div
-                className="overflow-hidden mb-8"
+                className="overflow-hidden"
                 style={{
-                  width: "220px",
+                  width: "100%",
+                  maxWidth: "220px",
                   aspectRatio: "3/4",
                   borderRadius: "16px",
                   background: "var(--bg-card)",
@@ -287,7 +265,10 @@ export default function Portfolio() {
                   }}
                 />
               </div>
+            </div>
 
+            {/* Bio */}
+            <div className="animate-fade-up delay-200">
               <p
                 className="text-base leading-relaxed mb-5"
                 style={{ color: "var(--text-secondary)" }}
@@ -333,66 +314,9 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
-
-            {/* Skills */}
-            <div className="space-y-5 animate-fade-up delay-200">
-              {skills.map((skill) => (
-                <div
-                  key={skill.name}
-                  className="card p-6"
-                  style={{ transition: "none", transform: "none" }}
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center"
-                      style={{ background: "rgba(200,169,110,0.1)" }}
-                    >
-                      <skill.icon
-                        size={18}
-                        style={{ color: "var(--accent)" }}
-                      />
-                    </div>
-                    <div>
-                      <h3
-                        className="text-sm font-semibold"
-                        style={{ color: "var(--text-primary)" }}
-                      >
-                        {skill.name}
-                      </h3>
-                    </div>
-                    <span
-                      className="ml-auto text-xs font-semibold"
-                      style={{ color: "var(--accent)" }}
-                    >
-                      {skill.level}%
-                    </span>
-                  </div>
-
-                  {/* Progress bar */}
-                  <div
-                    className="w-full h-1 rounded-full mb-4"
-                    style={{ background: "var(--border)" }}
-                  >
-                    <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{
-                        width: `${skill.level}%`,
-                        background: "var(--accent)",
-                      }}
-                    />
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {skill.technologies.map((t) => (
-                      <span key={t} className="tag">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
+
+          <SkillsSection />
         </div>
       </section>
 
